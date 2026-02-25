@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Special for Tania</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Monsieur+La+Doulaise&family=Lora:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-bright: #ffffff;
+            --bg-cream: #fdf5e6;
+            --accent-gold: #c5a059;
+            --text-dark: #4a443f;
+        }
+
+        body, html {
+            margin: 0; padding: 0; width: 100%; height: 100%;
+            overflow: hidden;
+            background: radial-gradient(circle at center, var(--bg-bright), var(--bg-cream), #f0e6d2);
+            font-family: 'Lora', serif;
+        }
+
+        #main-container {
+            width: 100vw; height: 100vh;
+            display: flex; justify-content: center; align-items: center;
+            position: relative; z-index: 10;
+        }
+
+        .page {
+            display: none;
+            width: 90%; max-width: 800px;
+            text-align: center;
+        }
+
+        .active { display: block !important; }
+
+        h1 {
+            font-family: 'Monsieur La Doulaise', cursive;
+            font-size: clamp(3.2em, 12vw, 5em);
+            margin: 0;
+            padding: 15px 0;
+            color: var(--accent-gold);
+            line-height: 1.2;
+            filter: drop-shadow(0 0 8px rgba(197, 160, 89, 0.2));
+            white-space: nowrap;
+        }
+
+        /* Jarak Will You tetap sejajar & renggang */
+        .will-you-container span {
+            display: inline-block;
+            padding: 0 20px;
+        }
+
+        .sub-header {
+            font-family: 'Cinzel', serif; letter-spacing: 8px;
+            font-size: clamp(0.6em, 2vw, 0.8em);
+            text-transform: uppercase; margin-bottom: 10px;
+            color: #8e8378;
+        }
+        
+        .content-text {
+            font-size: clamp(1em, 2.5vw, 1.3em);
+            line-height: 1.6; font-style: italic;
+            margin: 20px 0; color: var(--text-dark);
+        }
+
+        .btn-container { display: flex; justify-content: center; gap: 20px; margin-top: 30px; }
+        
+        button {
+            font-family: 'Cinzel', serif; padding: 12px 25px;
+            border: none; cursor: pointer; font-size: 0.8em;
+            letter-spacing: 2px; transition: 0.3s;
+        }
+
+        .primary-btn { background: var(--accent-gold); color: white; }
+        .secondary-btn { background: transparent; border: 1px solid var(--accent-gold); color: var(--accent-gold); }
+        button:hover { transform: translateY(-2px); opacity: 0.9; }
+
+        .shooting-star {
+            position: absolute; width: 2px; height: 80px;
+            background: linear-gradient(to bottom, transparent, var(--accent-gold));
+            pointer-events: none; opacity: 0;
+            animation: shooting 1.5s linear forwards;
+        }
+        @keyframes shooting {
+            0% { transform: translate(0, 0) rotate(-45deg); opacity: 0; }
+            30% { opacity: 0.8; }
+            100% { transform: translate(500px, 500px) rotate(-45deg); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <audio id="backsound" loop>
+        <source src="musik.mp3" type="audio/mpeg">
+    </audio>
+
+    <div id="main-container">
+        <div id="page1" class="page active">
+            <div class="sub-header">Chapter I</div>
+            <h1>Dearest Tania</h1>
+            <div class="content-text">
+                "Aneh tapi nyata sih, baru sebentar kenal tapi kok rasanya udah klop banget. Sikap kamu yang kadang kadang bikin greget ngebuat aku ngerasa kita tuh udah kenal lama, kadang keinget momen dinginnya Lembang sama Bandung yang jadi anget pokonya momen yang aku gabakal lupa pas kita jalan jalan di alun alun lembang pas hujan terus di daerah dago sambil makan jagung bakar atau waktu kita makan sate setelah trekking, udaranya mah dingin pisan sampai ke tulang. Tapi karena ngobrol sama kamu, rasa dinginnya kalah sama rasa nyaman. Bahkan menurut aku momen sesimpel jajan sambil bahas hal-hal nggak jelas aja udah cukup berkesan"
+            </div>
+            <div class="btn-container">
+                <button class="primary-btn" onclick="goTo(2)">Lanjutkan</button>
+            </div>
+        </div>
+
+        <div id="page2" class="page">
+            <div class="sub-header">Chapter II</div>
+            <h1 class="will-you-container"><span>Will</span><span>You?</span></h1>
+            <div class="content-text">
+                "Mulai sekarang gimana kalau aku dan kamu jadi kita aja dan ngejalin hubungan yang lebih deket lagi dari sekedar sahabat and making it official?"
+            </div>
+            <div class="btn-container">
+                <button class="primary-btn" onclick="accepted()">Yes, I Will</button>
+                <button class="secondary-btn" onclick="showPage3()">No</button>
+            </div>
+        </div>
+
+        <div id="page3" class="page">
+            <div class="sub-header">Error</div>
+            <h1>Ah gaseru!!</h1>
+            <div class="content-text">
+                "Apa itu no gaada di kamus aku, berhubung abis ulang tahun jadi aku kasi remedial,<br> Apa itu no gaada di kamus aku."
+            </div>
+            <div class="btn-container">
+                <button class="primary-btn" onclick="goTo(2)">Ulangi</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.body.addEventListener('click', function() {
+            document.getElementById('backsound').play().catch(e => {});
+        }, { once: true });
+
+        function goTo(num) {
+            const pages = document.getElementsByClassName('page');
+            for (let i = 0; i < pages.length; i++) {
+                pages[i].classList.remove('active');
+            }
+            document.getElementById('page' + num).classList.add('active');
+        }
+
+        // Fungsi khusus No agar langsung ke page 3
+        function showPage3() {
+            goTo(3);
+        }
+
+        // Link WhatsApp murni tanpa parameter pesan
+        function accepted() {
+            window.location.href = "https://wa.me/628112241511";
+        }
+
+        setInterval(() => {
+            const star = document.createElement('div');
+            star.className = 'shooting-star';
+            star.style.left = Math.random() * 100 + 'vw';
+            star.style.top = Math.random() * 30 + 'vh';
+            document.body.appendChild(star);
+            setTimeout(() => star.remove(), 1600);
+        }, 1000);
+    </script>
+</body>
+</html>
