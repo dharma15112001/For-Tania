@@ -33,7 +33,8 @@
             text-align: center;
         }
 
-        .active { display: block !important; }
+        /* Halaman aktif dipaksa muncul */
+        .page.active { display: block !important; }
 
         h1 {
             font-family: 'Monsieur La Doulaise', cursive;
@@ -46,7 +47,6 @@
             white-space: nowrap;
         }
 
-        /* Jarak Will You tetap sejajar & renggang */
         .will-you-container span {
             display: inline-block;
             padding: 0 20px;
@@ -71,9 +71,9 @@
             font-family: 'Cinzel', serif; padding: 12px 25px;
             border: none; cursor: pointer; font-size: 0.8em;
             letter-spacing: 2px; transition: 0.3s;
+            background: var(--accent-gold); color: white;
         }
 
-        .primary-btn { background: var(--accent-gold); color: white; }
         .secondary-btn { background: transparent; border: 1px solid var(--accent-gold); color: var(--accent-gold); }
         button:hover { transform: translateY(-2px); opacity: 0.9; }
 
@@ -97,14 +97,25 @@
     </audio>
 
     <div id="main-container">
-        <div id="page1" class="page active">
+        <div id="page0" class="page active">
+            <div class="sub-header">Hi Tania...</div>
+            <h1>Ready?</h1>
+            <div class="content-text">
+                "Pake earphone ya biar lebih kerasa..."
+            </div>
+            <div class="btn-container">
+                <button onclick="startStory()">Lanjutkan</button>
+            </div>
+        </div>
+
+        <div id="page1" class="page">
             <div class="sub-header">Chapter I</div>
             <h1>Dearest Tania</h1>
             <div class="content-text">
                 "Aneh tapi nyata sih, baru sebentar kenal tapi kok rasanya udah klop banget. Sikap kamu yang kadang kadang bikin greget ngebuat aku ngerasa kita tuh udah kenal lama, kadang keinget momen dinginnya Lembang sama Bandung yang jadi anget pokonya momen yang aku gabakal lupa pas kita jalan jalan di alun alun lembang pas hujan terus di daerah dago sambil makan jagung bakar atau waktu kita makan sate setelah trekking, udaranya mah dingin pisan sampai ke tulang. Tapi karena ngobrol sama kamu, rasa dinginnya kalah sama rasa nyaman. Bahkan menurut aku momen sesimpel jajan sambil bahas hal-hal nggak jelas aja udah cukup berkesan"
             </div>
             <div class="btn-container">
-                <button class="primary-btn" onclick="goTo(2)">Lanjutkan</button>
+                <button onclick="goTo(2)">Lanjutkan</button>
             </div>
         </div>
 
@@ -115,7 +126,7 @@
                 "Mulai sekarang gimana kalau aku dan kamu jadi kita aja dan ngejalin hubungan yang lebih deket lagi dari sekedar sahabat and making it official?"
             </div>
             <div class="btn-container">
-                <button class="primary-btn" onclick="accepted()">Yes, I Will</button>
+                <button onclick="accepted()">Yes, I Will</button>
                 <button class="secondary-btn" onclick="showPage3()">No</button>
             </div>
         </div>
@@ -127,30 +138,34 @@
                 "Apa itu no gaada di kamus aku, berhubung abis ulang tahun jadi aku kasi remedial,<br> Apa itu no gaada di kamus aku."
             </div>
             <div class="btn-container">
-                <button class="primary-btn" onclick="goTo(2)">Ulangi</button>
+                <button onclick="goTo(2)">Ulangi</button>
             </div>
         </div>
     </div>
 
     <script>
-        document.body.addEventListener('click', function() {
-            document.getElementById('backsound').play().catch(e => {});
-        }, { once: true });
+        // Fungsi untuk mulai cerita & musik
+        function startStory() {
+            const audio = document.getElementById('backsound');
+            audio.play().catch(e => console.log("Audio ditangguhkan"));
+            goTo(1);
+        }
 
         function goTo(num) {
             const pages = document.getElementsByClassName('page');
             for (let i = 0; i < pages.length; i++) {
+                pages[i].style.display = 'none'; // Sembunyikan total
                 pages[i].classList.remove('active');
             }
-            document.getElementById('page' + num).classList.add('active');
+            const target = document.getElementById('page' + num);
+            target.style.display = 'block';
+            target.classList.add('active');
         }
 
-        // Fungsi khusus No agar langsung ke page 3
         function showPage3() {
             goTo(3);
         }
 
-        // Link WhatsApp murni tanpa parameter pesan
         function accepted() {
             window.location.href = "https://wa.me/628112241511";
         }
